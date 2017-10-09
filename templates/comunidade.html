@@ -15,22 +15,56 @@
 
 {% block content %}
 {% if MALT_COMUNITY is defined %}
-<div class="container content-container">
-  <div class="row center-align">
-  {% for section in MALT_COMUNITY %}
-    <div class="col s12 m4 icon-block">
-      <h5>{{ section['title'] }}</h5>
+    {% for section in MALT_COMUNITY %}
+    <div class="{% if 'color' in section %}{{ section['color'] }}{% endif %}">
+        <div class="container content-container ">
+            <div class="section">
+                {% if 'title' in section %}
+                    <h2 class="center">{{ section['title'] }}</h2>
+                {% endif %}
+                {% if 'items' in section %}
+                <!--   Icon Section   -->
+                <div class="row">
+                    {% for item in section['items'] %}
+                    <!--   Icon Element   -->
+                    <div class="col s12 m4">
+                        <div class="icon-block">
+                            {% if 'icon' in item %}
+                            <h3 class="center {{ MALT_BASE_COLOR }}-text text-lighten-1">
+                                <i class="fa {{ item['icon'] }} fa-2x"></i>
+                            </h3>
+                            {% endif %}
 
-      <p class="light">{{ section['text'] }}</p>
+                            {% if 'title' in item %}
+                            <h5 class="center">{{ item['title'] }}</h5>
+                            {% endif %}
 
-      <div class="center">
-      {% for button in section['buttons'] %}
-        <a class="{{ MALT_BASE_COLOR }} waves-effect waves-light btn" href="{{ GET_LINK(button['href']) }}">{{ button['text'] }}</a>
-      {% endfor %}
-      </div>
+                            {% if 'text' in item %}
+                            <p class="light center-align">
+                            {{ item['text'] }}
+                            </p>
+                            {% endif %}
+
+                            {% if 'buttons' in item %}
+                            <div class="center">
+                                {% for button in item['buttons'] %}
+                                <a class="{{ MALT_BASE_COLOR }} waves-effect waves-light btn" href="{{ GET_LINK(button['href']) }}">
+                                    {% if 'icon' in button %}
+                                    <i class="fa {{ button['icon'] }}"></i>
+                                    {% endif %}
+                                    {{ button['text'] }}
+                                </a>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
-  {% endfor %}
-  </div>
-</div>
+    {% endfor %}
 {% endif %}
 {% endblock %}
