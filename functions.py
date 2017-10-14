@@ -6,6 +6,15 @@ import functools
 import os
 import posixpath
 import random
+import sys
+
+PY2 = sys.version_info[0] == 2
+
+
+def _next(it):
+    if PY2:
+        return it.next()
+    return next(it)
 
 
 def GET_AVATAR(autor, membros):
@@ -41,9 +50,9 @@ def GET_ARTICLE_IMAGE(article, root):
         return ""
 
     base = os.path.join('content', root)
-    banners = map(functools.partial(os.path.join, root), os.walk(base).next()[2])
+    banners = map(functools.partial(os.path.join, root), _next(os.walk(base))[2])
     random.seed(article.date)
-    return random.choice(banners)
+    return random.choice(list(banners))
 
 
 def GET_ARTICLE_AT_GITHUB(article, repo, branch):
